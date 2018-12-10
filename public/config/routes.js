@@ -42,7 +42,7 @@ app.use(
                         if (err) throw err;
                         request.session.correo = request.body.correo; 
                         response.send(result);                       
-                        //response.redirect('../glint/');
+                        
                         
                     });
                 }
