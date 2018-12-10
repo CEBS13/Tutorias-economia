@@ -68,3 +68,23 @@
     
 
 })(jQuery);
+
+$("#boton-inicio-sesion").click(function(){
+    
+    $.ajax({
+        url:"/Login",
+        data:"correo="+$("#email-login").val()+"&contrasena="+$("#pass-login").val(),
+        method:"POST",
+        dataType:"json",
+        success:function(respuesta){
+            console.log(respuesta.estatus);
+            if (respuesta.estatus == 0 )   
+                window.location.href ="../dashboard/template/index.html";
+                //console.log(respuesta);
+            else
+                //alert("Credenciales incorrectas");
+                $('#datos-invalidos').modal();
+        }
+    });
+
+});
