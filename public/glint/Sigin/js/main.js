@@ -100,8 +100,7 @@ $("#boton-registrarse").click(function(){
         });
 });
 
-$("#btncuExistente").click(function(){
-    console.log("aqui");
-    alert("quepedos");
-//    window.location.href ="../index.html";
+$("#btnCuentaRegistrada").click(function(){
+    window.location.href ="/glint/index.html";
 });
+

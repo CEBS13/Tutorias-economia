@@ -25,11 +25,11 @@ app.use(
         console.log("Hola funcionó");
         console.log(request.body.correo);
         var sql_insertar = 'INSERT INTO usuario(id_tipo_usuario_fk,txt_nombre,txt_nombre_usuario,txt_contrasena,txt_identidad,txt_num_cuenta,txt_direccion,txt_carrera,int_edad,txt_genero,txt_foto,txt_correo)VALUES(?,?,?,?,?,?,?,?,?,?,?,?)';
-        var sql_consultar = 'SELECT * FROM usuario where txt_correo = ?';
+        var sql_consultar = 'SELECT * FROM usuario where txt_correo = ? or txt_nombre_usuario=?';
         const conexion = mysql.createConnection(dbconfig.connection);
-        conexion.query(sql_consultar,[request.body.correo],function (err, data, fields) {      
+        conexion.query(sql_consultar,[request.body.correo,request.body.nombreUsuario],function (err, data, fields) {      
             if(data.length>0){
-                response.send({estatus:1, mensaje:"Ya hay una cuenta con este correo."});
+                response.send({estatus:1, mensaje:"Ya hay una cuenta con este correo o ese usuario."});
                 
             }else{
                 
