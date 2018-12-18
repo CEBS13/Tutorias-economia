@@ -15,8 +15,6 @@ var mysql = require('mysql');
  app.use(bodyParser.urlencoded({extended:true}));
  app.use(session({secret:"AsjFJ%!FJa",resave:true, saveUninitialized:true}));
 
- var publicHome = express.static("./glint/dashboard");
-
  
  var dbconfig = require('./public/config/db');
  var conexion = mysql.createConnection(dbconfig.connection);

@@ -5,7 +5,7 @@ module.exports = function (app){
     
 // sesion iniciada
 // Funcion de logueo
-var publicHome = express.static("../glint/dashboard");
+var publicHome = express.static("home");
 app.use(
     function(peticion,respuesta,next){
         if (peticion.session.correo){
@@ -24,7 +24,7 @@ app.use(
     app.post("/registrar-usuario", function(request, response){
         console.log("Hola funcionó");
         console.log(request.body.correo);
-        var sql_insertar = 'INSERT INTO usuario(id_tipo_usuario_fk,txt_nombre,txt_nombre_usuario,txt_contrasena,txt_identidad,txt_num_cuenta,txt_direccion,txt_carrera,int_edad,txt_genero,txt_foto,txt_correo)VALUES(?,?,?,?,?,?,?,?,?,?,?,?)';
+        var sql_insertar = 'INSERT INTO usuario(id_tipo_usuario_fk,txt_nombre,txt_nombre_usuario,txt_contrasena,txt_identidad,txt_num_cuenta,txt_descripcion,txt_carrera,int_edad,txt_genero,txt_foto,txt_correo)VALUES(?,?,?,?,?,?,?,?,?,?,?,?)';
         var sql_consultar = 'SELECT * FROM usuario where txt_correo = ? or txt_nombre_usuario=?';
         const conexion = mysql.createConnection(dbconfig.connection);
         conexion.query(sql_consultar,[request.body.correo,request.body.nombreUsuario],function (err, data, fields) {      
@@ -36,11 +36,11 @@ app.use(
                 conexion.query(
                     sql_insertar,
                     [request.body.tipoUsuario,request.body.nombre,request.body.nombreUsuario, 
-                    request.body.contrasena," "," "," ", " "," ",request.body.genero,0, request.body.correo],
+                    request.body.contrasena,request.body.identidadUsuario,request.body.cuentaUsuario,request.body.descripcionUsuario,request.body.carreraUsuario," ",request.body.genero,0, request.body.correo],
                     function(err, result){
                         console.log("entre");
                         if (err) throw err;
-                        request.session.correo = request.body.correo; 
+                        //request.session.correo = request.body.correo; 
                         response.send(result);                       
                         
                         
