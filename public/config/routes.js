@@ -60,12 +60,13 @@ app.use(
                         if (data.length>0){
                             
                             console.log("hvsh");
+                            console.log(data[0].txt_nombre_usuario);
                             peticion.session.idUsuario = data[0].id_usuario_pk;
                             peticion.session.tipoUsuario = data[0].id_tipo_usuario_fk;
-                            peticion.session.nombreUsuario = data[0].txt_nombre_usuario;
+                            peticion.session.nombreUsuario = data[0].txt_nombre;
                             peticion.session.identidad = data[0].txt_identidad;    
                             peticion.session.numCuenta = data[0].txt_num_cuenta;     
-                            peticion.session.direccion = data[0].txt_direccion;    
+                            peticion.session.direccion = data[0].txt_descripcion;    
                             peticion.session.carrera = data[0].txt_carrera;  
                             peticion.session.edad = data[0].int_edad;
                             peticion.session.genero = data[0].txt_genero;
@@ -85,8 +86,14 @@ app.use(
         });
 
         app.get("/sesion",function(peticion, respuesta){
-            respuesta.send({codigo:peticion.session.codigoUsuario, nombre:peticion.session.nombre, apellido:peticion.session.apellido, correo:peticion.session.correo, codigo_plan:peticion.session.codigo_plan});
+            respuesta.send({codigo:peticion.session.idUsuario, nombre:peticion.session.nombreUsuario, correo:peticion.session.correo,});
             //respuesta.send("Sesion eliminada");
         });        
+
+        app.get("/logout",function(peticion, respuesta){
+            peticion.session.destroy();
+            respuesta.redirect("index.html");
+            //respuesta.send("Sesion eliminada");
+        });
 
 }
