@@ -26,6 +26,6 @@ var mysql = require('mysql');
 
 
 require('./public/config/routes')(app);
- app.listen(8001);
-
+ app.listen(5000);
+console.log("Servidor iniciado...");
  
