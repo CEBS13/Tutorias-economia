@@ -21,6 +21,8 @@ app.use(
 );
 
 
+
+
     app.post("/registrar-usuario", function(request, response){
         console.log("Hola funcionó");
         console.log(request.body.correo);
@@ -63,15 +65,16 @@ app.use(
                             console.log(data[0].txt_nombre_usuario);
                             peticion.session.idUsuario = data[0].id_usuario_pk;
                             peticion.session.tipoUsuario = data[0].id_tipo_usuario_fk;
+                            peticion.session.usuario = data[0].txt_nombre_usuario;
                             peticion.session.nombreUsuario = data[0].txt_nombre;
                             peticion.session.identidad = data[0].txt_identidad;    
                             peticion.session.numCuenta = data[0].txt_num_cuenta;     
-                            peticion.session.direccion = data[0].txt_descripcion;    
+                            peticion.session.descripcion = data[0].txt_descripcion;    
                             peticion.session.carrera = data[0].txt_carrera;  
                             peticion.session.edad = data[0].int_edad;
                             peticion.session.genero = data[0].txt_genero;
-                            peticion.session.correo = data[0].txt_correo;                           
-                            
+                            peticion.session.correo = data[0].txt_correo; 
+                           
                              data[0].estatus = 0;
                             // respuesta.cookie("carpeta", 0)
                             respuesta.send(data[0]); 
@@ -86,7 +89,8 @@ app.use(
         });
 
         app.get("/sesion",function(peticion, respuesta){
-            respuesta.send({codigo:peticion.session.idUsuario, nombre:peticion.session.nombreUsuario, correo:peticion.session.correo,});
+            respuesta.send({codigo:peticion.session.idUsuario, nombre:peticion.session.nombreUsuario, correo:peticion.session.correo, usuario:peticion.session.usuario, 
+                            identidad:peticion.session.identidad, numCuenta:peticion.session.numCuenta, carrera:peticion.session.carrera, descripcion:peticion.session.descripcion});
             //respuesta.send("Sesion eliminada");
         });        
 
@@ -95,5 +99,50 @@ app.use(
             respuesta.redirect("index.html");
             //respuesta.send("Sesion eliminada");
         });
+
+
+        app.post("/nuevo-post", function(request, response){
+            var conexion = mysql.createConnection(dbconfig.connection);
+            var sql = `INSERT INTO 
+                       posts(id_usuario_pk, post, tipo_post) 
+                       VALUES (?,?,?)`;
+            
+            conexion.query(
+                sql,
+                [request.session.idUsuario, request.body.post,1],
+                function(err, result){
+                    if (err) throw err;
+                    response.send(result);
+                }
+            ); 
+        });
+
+
+        app.get("/obtener-posts", function(request, response){
+            var conexion = mysql.createConnection(dbconfig.connection);
+            var sql = `SELECT b.txt_nombre, a.post, a.fecha FROM posts AS a left JOIN usuario as b on a.id_usuario_pk = b.id_usuario_pk ORDER by a.fecha DESC`;
+            var usuarios = [];
+            conexion.query(sql)
+            .on("result", function(resultado){
+                usuarios.push(resultado);
+            })
+            .on("end",function(){
+                response.send(usuarios);
+            });   
+        });
+
+        app.get("/obtener-tutores", function(request, response){
+            var conexion = mysql.createConnection(dbconfig.connection);
+            var sql = `SELECT * FROM usuario WHERE id_tipo_usuario_fk = 1`;
+            var usuarios = [];
+            conexion.query(sql)
+            .on("result", function(resultado){
+                usuarios.push(resultado);
+            })
+            .on("end",function(){
+                response.send(usuarios);
+            });   
+        });
+        
 
 }

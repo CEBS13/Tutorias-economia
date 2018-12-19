@@ -13,7 +13,7 @@
  *      ## floated image
  *      ## tables
  *      ## Spacing
- *      ## pace.js styles - minimal
+ *      ## pace.js styles - minimal#FF8000
  *  # preloader
  *  # forms
  *      ## style placeholder text
@@ -2239,7 +2239,7 @@ html.no-csstransitions .home-content__main {
 .s-about {
     padding-top: 5rem;
     padding-bottom: 0rem;
-    background-color: #FF8000;
+    background-color: #70709e;
     color: #FFFFFF;
     position: relative;
 }

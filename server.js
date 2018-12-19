@@ -19,7 +19,7 @@ var mysql = require('mysql');
  var dbconfig = require('./public/config/db');
  var conexion = mysql.createConnection(dbconfig.connection);
 
- 
+
  
 
 
