@@ -62,7 +62,7 @@ function cargarPosts(){
                         <p>
                             ${respuesta[i].post}
                         </p>
-    
+						<div class="text-center"><a onClick="seleccionarUsuario(${respuesta[i].id_usuario_pk});" href="#" class="btn btn-primary">Ver perfil</a></div>
                     </div>
             </div>`
 				);
@@ -71,3 +71,15 @@ function cargarPosts(){
 	});
 }
 
+function seleccionarUsuario(codigoUsuario){
+	$.ajax({
+		url:"/guardar-codigo-usuario",
+		method:"POST",
+		data:"codigo_usuario="+codigoUsuario,
+		dataType:"json",
+		success:function(respuesta){
+			window.location.href = "page-profile-user.html";
+			console.log(respuesta);
+		}
+	})
+}

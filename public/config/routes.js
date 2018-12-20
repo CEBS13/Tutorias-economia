@@ -120,7 +120,7 @@ app.use(
 
         app.get("/obtener-posts", function(request, response){
             var conexion = mysql.createConnection(dbconfig.connection);
-            var sql = `SELECT b.txt_nombre, a.post, a.fecha FROM posts AS a left JOIN usuario as b on a.id_usuario_pk = b.id_usuario_pk ORDER by a.fecha DESC`;
+            var sql = `SELECT b.id_usuario_pk, b.txt_nombre, a.post, a.fecha FROM posts AS a left JOIN usuario as b on a.id_usuario_pk = b.id_usuario_pk ORDER by a.fecha DESC`;
             var usuarios = [];
             conexion.query(sql)
             .on("result", function(resultado){
@@ -143,6 +143,38 @@ app.use(
                 response.send(usuarios);
             });   
         });
-        
 
+       
+
+        app.post("/actualizar-perfil", function(request, response){
+            var conexion = mysql.createConnection(dbconfig.connection);
+            var sql = 'UPDATE usuario SET txt_nombre_usuario = ?, txt_identidad = ?, txt_num_cuenta = ?, txt_descripcion = ?, txt_carrera = ?, txt_correo = ? WHERE id_usuario_pk = ?';
+            
+            conexion.query(
+                sql,
+                [request.body.usuario, request.body.identidad, request.body.cuenta, request.body.descripcion, request.body.carrera, request.body.correo, request.session.idUsuario],
+                function(err, result){
+                    if (err) throw err;
+                    response.send(result);
+                }
+            ); 
+        });
+
+        app.post("/guardar-codigo-usuario", function(peticion, respuesta){
+            respuesta.cookie("codigo", peticion.body.codigo_usuario);
+            respuesta.send({mensaje:"Se guardo la cookie"});
+        });
+        
+        app.get("/informacion-usuario", function(request, response){
+            var conexion = mysql.createConnection(dbconfig.connection);
+            var sql = `SELECT * FROM usuario WHERE id_usuario_pk = ?`;
+            var usuarios = [];
+            conexion.query(sql, [request.cookies.codigo])
+            .on("result", function(resultado){
+                usuarios.push(resultado);
+            })
+            .on("end",function(){
+                response.send(usuarios);
+            });   
+        });
 }

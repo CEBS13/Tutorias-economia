@@ -42,12 +42,27 @@ function cargarTutores(){
 								
 							</div>
 							<ul class="opciones-tutor">
-								<li><a href="">Contactar</a></li>
-								<li><a href="">Ver más...</a></li>
+								<li><a onClick="seleccionarUsuario(${respuesta[i].id_usuario_pk});" href="">Ver perfil...</a></li>
 							</ul>
 						</div>`
 				);
 			}
 		}
 	});
+}
+
+
+
+
+function seleccionarUsuario(codigoUsuario){
+	$.ajax({
+		url:"/guardar-codigo-usuario",
+		method:"POST",
+		data:"codigo_usuario="+codigoUsuario,
+		dataType:"json",
+		success:function(respuesta){
+			window.location.href = "page-profile-user.html";
+			console.log(respuesta);
+		}
+	})
 }
